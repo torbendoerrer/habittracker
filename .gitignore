@@ -1,7 +1,3 @@
-# Firebase
-#
-android/app/google-services.json
-
 # OSX
 #
 .DS_Store
@@ -77,3 +73,5 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+android/app/google-services.json
