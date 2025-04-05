@@ -18,3 +18,20 @@ export const signUp = async (email, password) => {
     console.error(error);
   });
 }
+
+export const signIn = async (email, password) => {
+  auth().signInWithEmailAndPassword(email, password).then(() => {
+    console.log('User signed In');
+  })
+  .catch(error => {
+    if (error.code === 'auth/invalid-email') {
+      console.log('That email address is invalid!');
+    }
+
+    console.error(error);
+  });
+}
+
+export const signOut = () => {
+  auth().signOut().then(() => console.log('User signed out!'));
+}

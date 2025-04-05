@@ -1,22 +1,22 @@
 import React, {useState} from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-import { signUp } from '../auth/auth';
+import { signIn } from '../../auth/auth';
+import styles from './styles';
+import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = () => {
+    const navigation = useNavigation();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
 
 const handleLogin = async () => {
-    await signUp(email, password);
+    await signIn(email, password);
 }
 
 return (
     <View
-    style={{
-      flex: 1,
-      justifyContent: 'center',
-    }}>
+    style={styles.container}>
       <Text>Login</Text>
       <TextInput
         placeholder="E-Mail"
@@ -32,6 +32,7 @@ return (
         secureTextEntry
       />
       <Button title="Einloggen" onPress={handleLogin} />
+      <Button title="Registrieren" onPress={() => navigation.navigate('SignUp')}/>
     </View>
   );
 };
