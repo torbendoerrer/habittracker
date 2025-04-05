@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
-import LoginScreen from './src/screens/login';
-import HomeScreen from './src/screens/home';
+import { NavigationContainer } from '@react-navigation/native';
+import AuthStack from './src/navigation/authStack';
+import AppStack from './src/navigation/appStack';
+
 
 function App() {
   // Set an initializing state whilst Firebase connects
@@ -21,15 +23,10 @@ function App() {
 
   if (initializing) return null;
 
-  if (!user) {
-    return (
-      <LoginScreen></LoginScreen>
-    );
-  }
-
-  return (
-    <HomeScreen></HomeScreen>
-  );
+  return(
+  <NavigationContainer>
+      {user ? <AppStack /> : <AuthStack />}
+    </NavigationContainer>)
 }
 
 export default App;
