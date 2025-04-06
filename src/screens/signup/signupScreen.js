@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import styles from "./styles";
 import { View, Text, TextInput, Button } from 'react-native';
-import { signUp } from "../../auth/auth";
+import { signUp } from "../../services/authService";
 
 const SignupScreen = () => {
 
@@ -11,7 +11,7 @@ const SignupScreen = () => {
 
 
     const handleSignup = async () => {
-        await signUp(email, password);
+        await signUp(email, password, username);
     }
 
     return (

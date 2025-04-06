@@ -2,7 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/home/homeScreen';
 import { Button } from 'react-native';
-import { signOut } from '../auth/auth';
+import { signOut } from '../services/authService';
 
 const Stack = createNativeStackNavigator();
 

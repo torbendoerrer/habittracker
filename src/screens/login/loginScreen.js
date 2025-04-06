@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-import { signIn } from '../../auth/auth';
+import { signIn } from '../../services/authService';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 
