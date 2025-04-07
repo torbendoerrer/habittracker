@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
+import DraggableFlatList from "react-native-draggable-flatlist";
 import {View, Text, Button, FlatList, RefreshControl} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -20,7 +21,7 @@ const HomeScreen = () => {
           .collection('users')
           .doc(userId)
           .collection('habits')
-          .orderBy('created', 'desc') // Optional: Nach Erstellungsdatum sortieren
+          .orderBy('order') 
           .onSnapshot(snapshot => {
             const fetchedHabits = snapshot.docs.map(doc => ({
               id: doc.id,
@@ -47,6 +48,30 @@ const HomeScreen = () => {
       // Der onSnapshot Listener wird automatisch erneut ausgelöst und die Daten aktualisiert.
       // Hier ist keine zusätzliche manuelle Anfrage notwendig.
     }, []);
+
+    const updateHabitOrder = async (data) => {
+      const newOrder = data.map(habit => habit.id);
+      setHabits(data); 
+      // data ist ein Array mit den Habit-Objekten in der neuen Reihenfolge
+      const batch = firestore().batch();
+  
+      data.forEach((habit, index) => {
+        const habitRef = firestore()
+          .collection('users')
+          .doc(userId)
+          .collection('habits')
+          .doc(habit.id);
+        batch.update(habitRef, { order: index });
+      });
+  
+      await batch.commit();
+    };
+
+    const renderItem = ({ item, drag, isActive }) => (
+      <View style={{ backgroundColor: isActive ? 'lightgray' : 'white', padding: 16 }}>
+        <Text onLongPress={drag}>{item.name}</Text>
+      </View>
+    );
   
     if (loading) {
       return <Text>Lade Habits...</Text>;
@@ -55,13 +80,13 @@ const HomeScreen = () => {
     return (
         <View>
           <Text>Home</Text>
-          <FlatList
-        data={habits}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => <Text>{item.name}</Text>}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
+          <DraggableFlatList
+          data={habits}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          onDragEnd={({ data }) => { // Aktualisiere den lokalen State
+          updateHabitOrder(data); // Aktualisiere die Reihenfolge in Firestore
+        }}
       />
           <Button title="Create Habit" onPress={() => navigation.navigate('CreateHabit')}/>
         </View>

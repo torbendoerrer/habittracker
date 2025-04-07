@@ -3,6 +3,7 @@ import auth from '@react-native-firebase/auth';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthStack from './src/navigation/authStack';
 import AppStack from './src/navigation/appStack';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 function App() {
@@ -24,9 +25,12 @@ function App() {
   if (initializing) return null;
 
   return(
-  <NavigationContainer>
-      {user ? <AppStack /> : <AuthStack />}
-    </NavigationContainer>)
+    <GestureHandlerRootView>
+      <NavigationContainer>
+        {user ? <AppStack /> : <AuthStack />}
+      </NavigationContainer>
+    </GestureHandlerRootView>
+  )
 }
 
 export default App;

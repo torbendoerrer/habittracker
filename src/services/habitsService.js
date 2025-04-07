@@ -10,11 +10,21 @@ export const createHabit = async (name, category, duration) => {
 
             const habitsCollectionRef = firestore().collection('users').doc(userId).collection('habits');
 
+            const snapshot = await habitsCollectionRef.orderBy('order', 'desc').limit(1).get();
+
+            let highestOrder = -1;
+            if (!snapshot.empty) {
+              highestOrder = snapshot.docs[0].data().order || -1;
+            }
+
+            const newOrder = highestOrder + 1;
+
             const newHabit = {
                 name: name,
                 created: firestore.FieldValue.serverTimestamp(),
                 category: category,
-                duration: parseInt(duration, 10)
+                duration: parseInt(duration, 10),
+                order: newOrder
             };
 
             await habitsCollectionRef.add(newHabit);
