@@ -2,8 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
-import DraggableFlatList from "react-native-draggable-flatlist";
-import {View, Text, Button, FlatList, RefreshControl} from "react-native";
+import {NestableDraggableFlatList, NestableScrollContainer} from "react-native-draggable-flatlist";
+import {View, Text, Button, FlatList} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = () => {
@@ -78,9 +78,9 @@ const HomeScreen = () => {
     }
 
     return (
-        <View>
-          <Text>Home</Text>
-          <DraggableFlatList
+      <NestableScrollContainer>
+        
+          <NestableDraggableFlatList
           data={habits}
           renderItem={renderItem}
           keyExtractor={item => item.id}
@@ -89,7 +89,8 @@ const HomeScreen = () => {
         }}
       />
           <Button title="Create Habit" onPress={() => navigation.navigate('CreateHabit')}/>
-        </View>
+        
+        </NestableScrollContainer>
       );
 }
 
